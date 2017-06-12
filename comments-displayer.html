@@ -1,0 +1,90 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/maps-icons.html">
+<link rel="import" href="../iron-icons/social-icons.html">
+
+<dom-module id="comments-displayer">
+  <link rel="import" type="css" href="comments.css">
+  <template>
+	
+    <script type="text/javascript">
+
+    // Builds the HTML Table out of myList.
+    function buildHtmlTable(selector) {
+
+
+      for (var i = 0; i < myList.length; i++) {
+        var row$ = $('<tr/>');
+         
+          if(myList[i]["sentiment"]==1){
+            var cellValue = myList[i]["comment"];
+          } else{
+            continue;
+          }
+          
+          var cellValue = myList[i]["comment"];
+          if (cellValue == null) cellValue = "";
+          row$.append($('<td/>').html(cellValue));
+          if(selector=="#positiveTable"){
+          $(selector).append(row$);
+        }
+        }
+      for (var i = 0; i < myList.length; i++) {
+        var row$ = $('<tr/>');
+         
+          if(myList[i]["sentiment"]==-1){
+            var cellValue = myList[i]["comment"];
+          } else{
+            continue;
+          }
+          
+          var cellValue = myList[i]["comment"];
+          if (cellValue == null) cellValue = "";
+          row$.append($('<td/>').html(cellValue));
+          if(selector=="#negativeTable"){
+          $(selector).append(row$);
+        }
+        }    
+        
+      }
+
+
+    // Adds a header row to the table and returns the set of columns.
+    // Need to do union of keys from all records as some records may not contain
+    // all records.
+
+    </script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <body>
+    <h1 style="text-align: center;">Comments</h1>
+      <table id="positiveTable" border="1" style="float:left; margin-left: 5%; width: 40%; height: 100%; margin-bottom: 3%; text-align: center; background-color: #99ccff;">
+      <tr>
+        <th style="height: 10%;">
+          Positive
+        </th>
+      </tr>
+      </table>
+      <table id="negativeTable" border="1" style="float:right; margin-right: 5%; margin-bottom: 3%; width: 40%; text-align: center; height: 100%; background-color: #ff6666;">
+      <tr>
+        <th style="height: 10%;">
+          Negative
+        </th>
+      </tr>
+      </table>
+    </body>
+    <script type="text/javascript">
+      buildHtmlTable('#positiveTable');
+      buildHtmlTable('#negativeTable');
+    </script>
+
+  </template>
+
+    <script>
+      
+    </script>
+
+</dom-module>

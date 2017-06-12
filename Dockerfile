@@ -1,6 +1,6 @@
 from node:7.10.0
 
-ENV NODE_PATH=/tmp/node_modules APP_NAME=youtube-displayer
+ENV NODE_PATH=/tmp/node_modules APP_NAME=comments-displayer
 
 # Install dependencies first to use cache
 RUN npm install -g http-server bower
