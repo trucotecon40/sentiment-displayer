@@ -9,33 +9,14 @@
   <script src="bower_components/d3/d3.min.js"></script>
   <template>
     <div class="content">
-    <h1 style="text-align: center;">Comments</h1>
-      <table id="positiveTable" border="1" style="float:left; margin-left: 5%; width: 40%; height: 100%; margin-bottom: 3%; text-align: center; background-color: #99ccff;">
-      <tr>
-        <th style="height: 10%;">
-          Positive
-        </th>
-      </tr>
-      </table>
-      <table id="negativeTable" border="1" style="float:right; margin-right: 5%; margin-bottom: 3%; width: 40%; text-align: center; height: 100%; background-color: #ff6666;">
-      <tr>
-        <th style="height: 10%;">
-          Negative
-        </th>
-      </tr>
-      </table>
     </div>
-    <script type="text/javascript">
-
-    </script>
-
   </template>
 
     <script>
       //Create the SVG Viewport
       var svgContainer = d3.select("div.content").append("svg")
-                                           .attr("width", "100%")
-                                           .attr("height", "100%");
+                                           .attr("width", "30%")
+                                           .attr("height", "30%");
       var w = window.innerWidth -100;
       var h = window.innerHeight -90;
       var hred= h -10;
@@ -77,7 +58,7 @@
         { "sec": 28, "sentiment": 1}];
 
 
-      var circles = svgContainer.selectAll("body")
+      var circles = svgContainer.selectAll("div.content")
                                 .data(jsonCircles)
                                 .enter()
                                 .append("circle");      
