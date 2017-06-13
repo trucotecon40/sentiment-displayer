@@ -35,7 +35,7 @@
 
     <script>
 
-        function buildHtmlTable(selector) {
+        function buildHtmlTable(selector, myList) {
 
 
       for (var i = 0; i < myList.length; i++) {
@@ -163,7 +163,7 @@
 					  { "comment": "Dislike", "sentiment": -1 },
 					  { "comment": "El aliento de mi gato huele a comida de gato", "sentiment": 1 },
 					  { "comment": "Pues se ha quedado una tarde espectacular para pegarse un tiro", "sentiment": -1 }];
-            	buildHtmlTable('#positiveTable');
+            	buildHtmlTable('#positiveTable', myList);
       			buildHtmlTable('#negativeTable');
             }
 
