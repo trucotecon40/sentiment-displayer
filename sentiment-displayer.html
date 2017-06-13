@@ -101,11 +101,9 @@
             },
             ready: function(){
               var contentDiv = Polymer.dom(this.root).querySelector('#content');
-              var svgContainer = d3.select("#content").classed("svg-container", true)
-                                                   .append("svg")
-                                                   .attr("preserveAspectRatio", "xMinYmin meet")
-                                                   .attr("viewBox", "0 0 600 400")
-                                                   .classed("svg-content-responsive", true);
+              var svgContainer = d3.select("#content").append("svg")
+                                                   .attr("width", "100%")
+                                                   .attr("height", "100%");
               var w = $(contentDiv).innerWidth() -100;
               var h = $(contentDiv).innerHeight() -90;
               var hred= h -10;
