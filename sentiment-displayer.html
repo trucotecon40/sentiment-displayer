@@ -8,60 +8,13 @@
   <link rel="import" type="css" href="sentiment.css">
   <script src="bower_components/d3/d3.min.js"></script>
   <template>
-    <div class="content">
+    <div id="content">
     </div>
   </template>
 
     <script>
       //Create the SVG Viewport
-      var svgContainer = d3.select("div.content").append("svg")
-                                           .attr("width", "30%")
-                                           .attr("height", "30%");
-      var w = window.innerWidth -100;
-      var h = window.innerHeight -90;
-      var hred= h -10;
-      var hmed= h/2;
-      //Create the Scale we will use for the Axis
-      var n = 1;
-
-      //Create the Axis
-      //Create an SVG group Element for the Axis elements and call the xAxis function
-      var jsonCircles = [
-        { "sec": 0, "sentiment": 0},
-        { "sec": 1, "sentiment": 1},
-        { "sec": 2, "sentiment": -1},
-        { "sec": 3, "sentiment": -1},
-        { "sec": 4, "sentiment": 1},  
-        { "sec": 5, "sentiment": 1},
-        { "sec": 6, "sentiment": -1},
-        { "sec": 7, "sentiment": 1},
-        { "sec": 8, "sentiment": 1}, 
-        { "sec": 9, "sentiment": -1},
-        { "sec": 10, "sentiment": 1},
-        { "sec": 11, "sentiment": 1},
-        { "sec": 12, "sentiment": -1},
-        { "sec": 13, "sentiment": -1},
-        { "sec": 14, "sentiment": 1},  
-        { "sec": 15, "sentiment": 1},
-        { "sec": 16, "sentiment": -1},
-        { "sec": 17, "sentiment": 1},
-        { "sec": 18, "sentiment": 1},
-        { "sec": 19, "sentiment": -1},
-        { "sec": 20, "sentiment": 1},  
-        { "sec": 21, "sentiment": 1},
-        { "sec": 22, "sentiment": -1},
-        { "sec": 23, "sentiment": -1},
-        { "sec": 24, "sentiment": 1},  
-        { "sec": 25, "sentiment": 1},
-        { "sec": 26, "sentiment": -1},
-        { "sec": 27, "sentiment": 1},
-        { "sec": 28, "sentiment": 1}];
-
-
-      var circles = svgContainer.selectAll("div.content")
-                                .data(jsonCircles)
-                                .enter()
-                                .append("circle");      
+    
       var numberMax = 0;
         Polymer({
             is: 'sentiment-displayer',
@@ -146,6 +99,54 @@
               }
             },
             ready: function(){
+              var svgContainer = d3.select("#content").append("svg")
+                                                   .attr("width", "30%")
+                                                   .attr("height", "30%");
+              var w = window.innerWidth -100;
+              var h = window.innerHeight -90;
+              var hred= h -10;
+              var hmed= h/2;
+              //Create the Scale we will use for the Axis
+              var n = 1;
+
+              //Create the Axis
+              //Create an SVG group Element for the Axis elements and call the xAxis function
+              var jsonCircles = [
+                { "sec": 0, "sentiment": 0},
+                { "sec": 1, "sentiment": 1},
+                { "sec": 2, "sentiment": -1},
+                { "sec": 3, "sentiment": -1},
+                { "sec": 4, "sentiment": 1},  
+                { "sec": 5, "sentiment": 1},
+                { "sec": 6, "sentiment": -1},
+                { "sec": 7, "sentiment": 1},
+                { "sec": 8, "sentiment": 1}, 
+                { "sec": 9, "sentiment": -1},
+                { "sec": 10, "sentiment": 1},
+                { "sec": 11, "sentiment": 1},
+                { "sec": 12, "sentiment": -1},
+                { "sec": 13, "sentiment": -1},
+                { "sec": 14, "sentiment": 1},  
+                { "sec": 15, "sentiment": 1},
+                { "sec": 16, "sentiment": -1},
+                { "sec": 17, "sentiment": 1},
+                { "sec": 18, "sentiment": 1},
+                { "sec": 19, "sentiment": -1},
+                { "sec": 20, "sentiment": 1},  
+                { "sec": 21, "sentiment": 1},
+                { "sec": 22, "sentiment": -1},
+                { "sec": 23, "sentiment": -1},
+                { "sec": 24, "sentiment": 1},  
+                { "sec": 25, "sentiment": 1},
+                { "sec": 26, "sentiment": -1},
+                { "sec": 27, "sentiment": 1},
+                { "sec": 28, "sentiment": 1}];
+
+
+              var circles = svgContainer.selectAll("#content")
+                                        .data(jsonCircles)
+                                        .enter()
+                                        .append("circle");  
                     var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
                     var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
             	       window.setInterval(function(){
