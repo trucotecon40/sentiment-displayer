@@ -1,6 +1,6 @@
 from node:7.10.0
 
-ENV NODE_PATH=/tmp/node_modules APP_NAME=comments-displayer
+ENV NODE_PATH=/tmp/node_modules APP_NAME=sentiment-displayer
 
 # Install dependencies first to use cache
 RUN npm install -g http-server bower
