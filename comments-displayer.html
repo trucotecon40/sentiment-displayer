@@ -34,12 +34,7 @@
   </template>
 
     <script>
-    var myList = [
-  { "comment": "Me parece bien", "sentiment": 1 },
-  { "comment": "Estoy de acuerdo", "sentiment": 1 },
-  { "comment": "Dislike", "sentiment": -1 },
-  { "comment": "El aliento de mi gato huele a comida de gato", "sentiment": 1 },
-  { "comment": "Pues se ha quedado una tarde espectacular para pegarse un tiro", "sentiment": -1 }];
+
         function buildHtmlTable(selector) {
 
 
@@ -77,8 +72,7 @@
         }    
         
       }
-      buildHtmlTable('#positiveTable');
-      buildHtmlTable('#negativeTable');
+      
       var numberMax = 0;
         Polymer({
             is: 'comments-displayer',
@@ -161,6 +155,16 @@
     this.total = num;
                 idBar.style.width = "100%";
               }
+            },
+            ready: function(){
+            	    var myList = [
+					  { "comment": "Me parece bien", "sentiment": 1 },
+					  { "comment": "Estoy de acuerdo", "sentiment": 1 },
+					  { "comment": "Dislike", "sentiment": -1 },
+					  { "comment": "El aliento de mi gato huele a comida de gato", "sentiment": 1 },
+					  { "comment": "Pues se ha quedado una tarde espectacular para pegarse un tiro", "sentiment": -1 }];
+            	buildHtmlTable('#positiveTable');
+      			buildHtmlTable('#negativeTable');
             }
 
         });
