@@ -104,8 +104,8 @@
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
-              var w = $(contentDiv).innerWidth();
-              var h = $(contentDiv).innerHeight();
+              var w = $(contentDiv).outerWidth();
+              var h = $(contentDiv).outerHeight();
               var hred= h;
               var hmed= h/2;
               //Create the Scale we will use for the Axis
