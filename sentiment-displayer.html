@@ -100,7 +100,7 @@
               }
             },
             ready: function(){
-              var contentDiv = Polymer.dom(this.root).querySelector('#content');
+              var contentDiv = document.querySelector('#content');
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
