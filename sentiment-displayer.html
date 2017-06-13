@@ -104,9 +104,9 @@
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
-              var w = $(contentDiv).outerWidth();
-              var h = $(contentDiv).outerHeight();
-              var hred= h;
+              var w = $(contentDiv).innerWidth();
+              var h = $(contentDiv).innerHeight();
+              var hred= h -10;
               var hmed= h/2;
               //Create the Scale we will use for the Axis
               var n = 1;
@@ -159,7 +159,7 @@
                       
                       d3.select("svg").select("g").remove();
                       d3.select("path").remove();
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50 ," + hmed + ")").call(xAxis);
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 5 ," + hmed + ")").call(xAxis);
                       circleAttributes = circles
                                        .attr("cx", function (d) { return d.sec*w/n +50; })
                                        .attr("cy", function (d) { return -d.sentiment * hmed*0.5+ hmed; })
@@ -173,7 +173,7 @@
                                             .attr("stroke", "blue")
                                             .attr("stroke-width", 2)
                                             .attr("fill", "none");
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50,"+ h + ")").call(yAxis);
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 500,"+ h + ")").call(yAxis);
                         n++;
                     },1000);
             }
