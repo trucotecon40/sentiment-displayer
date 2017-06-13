@@ -3,15 +3,38 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/maps-icons.html">
 <link rel="import" href="../iron-icons/social-icons.html">
-
+<link rel="import" href="../jquery/social-icons.html">
 <dom-module id="comments-displayer">
   <link rel="import" type="css" href="comments.css">
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <template>
-	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <body>
+    <h1 style="text-align: center;">Comments</h1>
+      <table id="positiveTable" border="1" style="float:left; margin-left: 5%; width: 40%; height: 100%; margin-bottom: 3%; text-align: center; background-color: #99ccff;">
+      <tr>
+        <th style="height: 10%;">
+          Positive
+        </th>
+      </tr>
+      </table>
+      <table id="negativeTable" border="1" style="float:right; margin-right: 5%; margin-bottom: 3%; width: 40%; text-align: center; height: 100%; background-color: #ff6666;">
+      <tr>
+        <th style="height: 10%;">
+          Negative
+        </th>
+      </tr>
+      </table>
+    </body>
     <script type="text/javascript">
 
-    // Builds the HTML Table out of myList.
-    function buildHtmlTable(selector) {
+    </script>
+
+  </template>
+
+    <script>
+        function buildHtmlTable(selector) {
 
 
       for (var i = 0; i < myList.length; i++) {
@@ -48,43 +71,93 @@
         }    
         
       }
-
-
-    // Adds a header row to the table and returns the set of columns.
-    // Need to do union of keys from all records as some records may not contain
-    // all records.
-
-    </script>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-    <body>
-    <h1 style="text-align: center;">Comments</h1>
-      <table id="positiveTable" border="1" style="float:left; margin-left: 5%; width: 40%; height: 100%; margin-bottom: 3%; text-align: center; background-color: #99ccff;">
-      <tr>
-        <th style="height: 10%;">
-          Positive
-        </th>
-      </tr>
-      </table>
-      <table id="negativeTable" border="1" style="float:right; margin-right: 5%; margin-bottom: 3%; width: 40%; text-align: center; height: 100%; background-color: #ff6666;">
-      <tr>
-        <th style="height: 10%;">
-          Negative
-        </th>
-      </tr>
-      </table>
-    </body>
-    <script type="text/javascript">
       buildHtmlTable('#positiveTable');
       buildHtmlTable('#negativeTable');
-    </script>
+      var numberMax = 0;
+        Polymer({
+            is: 'comments-displayer',
+            properties: {
+              total: {
+                type: Number,
+                value: 0
+              },
+              stylebg: {
+                type: String,
+                value: 'bg-yellow'
+              },
+              data: {
+                type: Object,
+                observer: '_dataChanged'              
+              },
+              title: {
+                type: String,
+                value: 'Elements selected'
+              },
+              subtitle: {
+                type: String,
+                value: 'Total elements'
+              },
+              icon: {
+                type: String,
+                value: 'delete'
+              },
+              number: {
+                type: Number,
+                value: 0
+              },
+              object: {
+                type: String
+              },
+              aggkey: {
+                type: String,
+                value: 'category'
+              },
+              filters: {
+                type: Array,
+                notify: true,
+                value: function() { return []; }
+              }
+            },
 
-  </template>
+            kFormatter: function(num){
+              return num > 999 ? (num/1000).toFixed(1) + 'k' : num
+            },
 
-    <script>
-      
+            _dataChanged: function() {
+              console.log("data has changed")
+              if(this.data == undefined || this.data.hits == undefined){
+                console.log("No data");
+                return;
+              }
+              numberMax = this.data.hits.total;
+              var idNum = this.$.number;
+              var idBar = this.$.barprogress;
+              var object = this.object;
+              if (object != undefined){
+                var hits = this.data.aggregations[this.aggkey].buckets;
+                var selected = 0;
+                hits.forEach(function(entry) {
+                  if(entry.key == object){
+                    //console.log("el object es: "+object+" el entry.key es: "+entry.key)
+                    selected = entry.doc_count;
+                  }
+                });
+                console.log(selected);
+                idNum.innerHTML = this.kFormatter(selected);
+                progress = 100*selected/numberMax;
+                idBar.style.width = progress+"%";
+                this.total = this.kFormatter(numberMax);
+              }
+              else{
+                //console.log(this.data.hits)
+                var num = this.data.hits.total > 999 ? (this.data.hits.total/1000).toFixed(1) + 'k' : this.data.hits.total;
+                idNum.innerHTML = num;
+    this.total = num;
+                idBar.style.width = "100%";
+              }
+            }
+
+        });
     </script>
 
 </dom-module>
