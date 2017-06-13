@@ -102,8 +102,8 @@
             ready: function(){
               var contentDiv = Polymer.dom(this.root).querySelector('#content');
               var svgContainer = d3.select("#content").append("svg")
-                                                   .attr("width", "30%")
-                                                   .attr("height", "30%");
+                                                   .attr("width", "auto")
+                                                   .attr("height", "auto");
               var w = $(contentDiv).innerWidth() -100;
               var h = $(contentDiv).innerHeight() -90;
               var hred= h -10;
