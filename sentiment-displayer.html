@@ -8,7 +8,7 @@
   <link rel="import" type="css" href="sentiment.css">
   <script src="bower_components/d3/d3.min.js"></script>
   <template>
-    <body>
+    <div class="content">
     <h1 style="text-align: center;">Comments</h1>
       <table id="positiveTable" border="1" style="float:left; margin-left: 5%; width: 40%; height: 100%; margin-bottom: 3%; text-align: center; background-color: #99ccff;">
       <tr>
@@ -24,7 +24,7 @@
         </th>
       </tr>
       </table>
-    </body>
+    </div>
     <script type="text/javascript">
 
     </script>
@@ -33,7 +33,7 @@
 
     <script>
       //Create the SVG Viewport
-      var svgContainer = d3.select("body").append("svg")
+      var svgContainer = d3.select("div.content").append("svg")
                                            .attr("width", "100%")
                                            .attr("height", "100%");
       var w = window.innerWidth -100;
@@ -42,8 +42,7 @@
       var hmed= h/2;
       //Create the Scale we will use for the Axis
       var n = 1;
-      var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
-      var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
+
       //Create the Axis
       //Create an SVG group Element for the Axis elements and call the xAxis function
       var jsonCircles = [
@@ -166,6 +165,8 @@
               }
             },
             ready: function(){
+                    var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
+                    var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
             	       window.setInterval(function(){
 
                       axisScale = d3.scale.linear().domain([0, n]).range([0, w]);
