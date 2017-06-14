@@ -22,11 +22,11 @@
   "devDependencies": {},
   "license": "MIT",
   "homepage": "https://github.com/trucotecon40/sentiment-displayer.git",
-  "_release": "ca0e27969d",
+  "_release": "254649887a",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "ca0e27969dcccdaeb3e7c16ba5654c17447236a2"
+    "commit": "254649887a8a7b567cc2554d51b11be01edb609c"
   },
   "_source": "https://github.com/trucotecon40/sentiment-displayer.git",
   "_target": "*",
