@@ -15,7 +15,9 @@
 
     <script>
       //Create the SVG Viewport
-    
+                  var w = document.getElementById('content').clientWidth;
+
+              var h = document.getElementById('content').clientHeight;
       var numberMax = 0;
         Polymer({
             is: 'sentiment-displayer',
@@ -104,10 +106,7 @@
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
-              var contentDiv = document.querySelector('#content');
-              var w = document.getElementById('content').clientWidth;
 
-              var h = document.getElementById('content').clientHeight;
               console.log(w + " " + h);
               var hred= h -10;
               var hmed= h/2;
