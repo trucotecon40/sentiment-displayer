@@ -105,6 +105,9 @@
               var w = 480//this.$(content).width();
 
               var h = 480 //this.$(content).height();
+              var waum = 480 + 10//this.$(content).width();
+
+              var haum = 480 + 10 //this.$(content).height();
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", w)
                                                    .attr("height", h);
@@ -177,7 +180,7 @@
                                             .attr("stroke", "blue")
                                             .attr("stroke-width", 2)
                                             .attr("fill", "none");
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50,"+ h + 5 + ")").call(yAxis);
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50,"+ h + ")").call(yAxis);
                         n++;
                     },1000);
             }
