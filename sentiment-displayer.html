@@ -100,12 +100,15 @@
               }
             },
             ready: function(){
-              var contentDiv = document.querySelector('#content');
+              
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
-              var w = $(contentDiv).innerWidth();
-              var h = $(contentDiv).innerHeight();
+              var contentDiv = document.querySelector('#content');
+              var w = $(contentDiv).width();
+
+              var h = $(contentDiv).height();
+              console.log(w + " " + h);
               var hred= h -10;
               var hmed= h/2;
               //Create the Scale we will use for the Axis
