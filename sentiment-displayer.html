@@ -102,12 +102,12 @@
             ready: function(){
               
               
-              var w = 480//this.$(content).width();
+              var w = window.innerWidth/2;//this.$(content).width();
 
-              var h = 480 //this.$(content).height();
-              var waum = 480 + 10//this.$(content).width();
+              var h = window.innerHeight/2; //this.$(content).height();
+              var waum = w + 10//this.$(content).width();
 
-              var haum = 480 + 10 //this.$(content).height();
+              var haum = h + 10 //this.$(content).height();
               var svgContainer = d3.select("#content").append("svg")
                                                    .attr("width", waum)
                                                    .attr("height", haum);
