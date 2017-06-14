@@ -105,9 +105,9 @@
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
               var contentDiv = document.querySelector('#content');
-              var w = 480//this.$(content).width();
+              var w = 480 -100//this.$(content).width();
 
-              var h = 480//this.$(content).height();
+              var h = 480 -90//this.$(content).height();
               console.log(w + " " + h);
               var hred= h -10;
               var hmed= h/2;
@@ -162,7 +162,7 @@
                       
                       d3.select("svg").select("g").remove();
                       d3.select("path").remove();
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 500 ," + hmed + ")").call(xAxis);
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50 ," + hmed + ")").call(xAxis);
                       circleAttributes = circles
                                        .attr("cx", function (d) { return d.sec*w/n +50; })
                                        .attr("cy", function (d) { return -d.sentiment * hmed*0.5+ hmed; })
@@ -176,7 +176,7 @@
                                             .attr("stroke", "blue")
                                             .attr("stroke-width", 2)
                                             .attr("fill", "none");
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 5,"+ h + ")").call(yAxis);
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50,"+ h + ")").call(yAxis);
                         n++;
                     },1000);
             }
