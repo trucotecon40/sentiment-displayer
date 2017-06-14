@@ -105,9 +105,9 @@
                                                    .attr("width", "100%")
                                                    .attr("height", "100%");
               var contentDiv = document.querySelector('#content');
-              var w = $(contentDiv).width();
+              var w = document.getElementById('content').clientWidth;
 
-              var h = $(contentDiv).height();
+              var h = document.getElementById('content').clientHeight;
               console.log(w + " " + h);
               var hred= h -10;
               var hmed= h/2;
