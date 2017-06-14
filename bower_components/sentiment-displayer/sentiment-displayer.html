@@ -158,6 +158,31 @@
                                         .append("circle");  
                     var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
                     var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
+            	       window.setInterval(function(){
+
+                      axisScale = d3.scale.linear().domain([0, n]).range([0, w]);
+                      xAxis = d3.svg.axis().scale(axisScale);
+                      d3.select("svg").select("g").remove();
+                      
+                      d3.select("svg").select("g").remove();
+                      d3.select("path").remove();
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50 ," + hmed + ")").call(xAxis);
+                      circleAttributes = circles
+                                       .attr("cx", function (d) { return d.sec*w/n +50; })
+                                       .attr("cy", function (d) { return -d.sentiment * hmed*0.5+ hmed; })
+                                       .attr("r", function (d) { return 5; }); 
+                        lineFunction = d3.svg.line()
+                                          .x(function(d) { return d.sec*w/n +50; })
+                                          .y(function(d) { return -d.sentiment * hmed*0.5+ hmed; })
+                                          .interpolate("linear");               
+                        lineGraph = svgContainer.append("path")
+                                            .attr("d", lineFunction(jsonCircles))
+                                            .attr("stroke", "blue")
+                                            .attr("stroke-width", 2)
+                                            .attr("fill", "none");
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50,"+ h + ")").call(yAxis);
+                        n++;
+                    },1000);
             }
 
         });

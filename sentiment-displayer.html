@@ -108,10 +108,10 @@
               var waum = w + 10//this.$(content).width();
 
               var haum = h + 10 //this.$(content).height();
-              var svgContainer = d3.select("#content").append("svg")
+              var svgContainer = d3.select(this.$.content).append("svg")
                                                    .attr("width", waum)
                                                    .attr("height", haum);
-              var contentDiv = document.querySelector('#content');
+              
               console.log(w + " " + h);
               var hred= h -10;
               var hmed= h/2;
