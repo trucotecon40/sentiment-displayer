@@ -101,13 +101,14 @@
             },
             ready: function(){
               
-              var svgContainer = d3.select("#content").append("svg")
-                                                   .attr("width", "100%")
-                                                   .attr("height", "100%");
-              var contentDiv = document.querySelector('#content');
+              
               var w = 480 -100//this.$(content).width();
 
               var h = 480 -90//this.$(content).height();
+              var svgContainer = d3.select("#content").append("svg")
+                                                   .attr("width", w)
+                                                   .attr("height", h);
+              var contentDiv = document.querySelector('#content');
               console.log(w + " " + h);
               var hred= h -10;
               var hmed= h/2;
