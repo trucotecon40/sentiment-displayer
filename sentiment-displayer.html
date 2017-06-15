@@ -72,8 +72,8 @@
               var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
               var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
                     function setTime(){
-              var t1 = d3.select(this.$.time1);
-              var t2 = d3.select(this.$.time2);
+              var t1 = document.getElementById("time1");
+              var t2 = document.getElementById("time2");
               n = t2.value - t1.value;
                 axisScale = d3.scale.linear().domain([t1.value, t2.value]).range([0, w]);
                       xAxis = d3.svg.axis().scale(axisScale);
