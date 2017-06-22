@@ -33,36 +33,7 @@
 
               //Create the Axis
               //Create an SVG group Element for the Axis elements and call the xAxis function
-              var jsonCircles =  [
-                { "sec": 0, "sentiment": 0},
-                { "sec": 1, "sentiment": 1},
-                { "sec": 2, "sentiment": -1},
-                { "sec": 3, "sentiment": -1},
-                { "sec": 4, "sentiment": 1},  
-                { "sec": 5, "sentiment": 1},
-                { "sec": 6, "sentiment": -1},
-                { "sec": 7, "sentiment": 1},
-                { "sec": 8, "sentiment": 1}, 
-                { "sec": 9, "sentiment": -1},
-                { "sec": 10, "sentiment": 1},
-                { "sec": 11, "sentiment": 1},
-                { "sec": 12, "sentiment": -1},
-                { "sec": 13, "sentiment": -1},
-                { "sec": 14, "sentiment": 1},  
-                { "sec": 15, "sentiment": 1},
-                { "sec": 16, "sentiment": -1},
-                { "sec": 17, "sentiment": 1},
-                { "sec": 18, "sentiment": 1},
-                { "sec": 19, "sentiment": -1},
-                { "sec": 20, "sentiment": 1},  
-                { "sec": 21, "sentiment": 1},
-                { "sec": 22, "sentiment": -1},
-                { "sec": 23, "sentiment": -1},
-                { "sec": 24, "sentiment": 1},  
-                { "sec": 25, "sentiment": 1},
-                { "sec": 26, "sentiment": -1},
-                { "sec": 27, "sentiment": 1},
-                { "sec": 28, "sentiment": 1}];
+              var jsonCircles = {{data}};
 
 
               var circles = svgContainer.selectAll("#content")
@@ -71,7 +42,6 @@
                                         .append("circle");  
               var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
               var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
-
               function setTime(){
               var t1 = document.getElementById("time1");
               var t2 = document.getElementById("time2");
@@ -130,7 +100,7 @@
                 console.log("No data");
                 return;
               }
-              this.setTime();
+              setTime();
 
             },
             ready: function(){
