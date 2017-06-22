@@ -9,8 +9,9 @@
   <script src="bower_components/d3/d3.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>  
   <template>
-    <input type="text" name="time1" id="time1" >
-    <input type="text" name="time2" id="time2" >
+    <div style="display: none;" id="datacontainer">{{data}}</div>
+    <input type="text" name="time1" id="time1" value$="{{initialtime}}">
+    <input type="text" name="time2" id="time2" value$={{finaltime}}">
     <button onclick="setTime();"></button>
     <div id="content">
     </div>
@@ -33,7 +34,7 @@
 
               //Create the Axis
               //Create an SVG group Element for the Axis elements and call the xAxis function
-              var jsonCircles $={{data}};
+              var jsonCircles = document.getElementById('datacontainer').innerHTML;
 
 
               var circles = svgContainer.selectAll("#content")
