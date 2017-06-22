@@ -1,0 +1,34 @@
+{
+  "name": "sentiment-displayer",
+  "authors": [
+    "gsi-upm"
+  ],
+  "description": "This Web component displays video sentiments from elasticsearch",
+  "main": "comments-displayer.html",
+  "keywords": [
+    "elasticsearch",
+    "size",
+    "polymer",
+    "web-components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "iron-icon": "PolymerElements/iron-icon#^1.0.0",
+    "iron-icons": "PolymerElements/iron-icons#^1.0.0",
+    "jquery": "jQuery#2.1.1",
+    "sentiment-displayer": "*",
+    "d3": "v3.4.13"
+  },
+  "devDependencies": {},
+  "license": "MIT",
+  "homepage": "https://github.com/trucotecon40/sentiment-displayer.git",
+  "_release": "26d316cc63",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "26d316cc63760cbaa7cc9f06c8a0421a501ca041"
+  },
+  "_source": "https://github.com/trucotecon40/sentiment-displayer.git",
+  "_target": "*",
+  "_originalSource": "sentiment-displayer"
+}
