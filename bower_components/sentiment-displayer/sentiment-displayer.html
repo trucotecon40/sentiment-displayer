@@ -79,15 +79,16 @@
         Polymer({
             is: 'sentiment-displayer',
             properties: {
-              finaltime: {
-                type: String,
-                value: ''
-  
-              },
+              
               initialtime: {
                 type: String,
                 value: ''
                   
+              },
+              data: {
+                type: Object,
+                value: '{}'
+                              
               }
             },
             ready: function(){
