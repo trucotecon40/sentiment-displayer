@@ -34,8 +34,10 @@
 
               //Create the Axis
               //Create an SVG group Element for the Axis elements and call the xAxis function
-              var jsonCircles = document.getElementById('datacontainer').innerHTML;
-
+              $(document).ready(function() {
+              var jsonCircles = $.parseJSON($("#datacontainer").html());
+              });
+              
 
               var circles = svgContainer.selectAll("#content")
                                         .data(jsonCircles)
