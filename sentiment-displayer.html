@@ -42,6 +42,7 @@
                                         .append("circle");  
               var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
               var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
+              
               function setTime(){
               var t1 = document.getElementById("time1");
               var t2 = document.getElementById("time2");
@@ -80,13 +81,13 @@
             is: 'sentiment-displayer',
             properties: {
               finaltime: {
-                type: Number,
-                value: 0,
+                type: String,
+                value: '',
                 observer: '_dataChanged'  
               },
               initialtime: {
-                type: Number,
-                value: 0,
+                type: String,
+                value: '',
                 observer: '_dataChanged'  
               },
               data: {
