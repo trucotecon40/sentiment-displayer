@@ -9,8 +9,8 @@
   <script src="bower_components/d3/d3.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>  
   <template>
-    <input type="text" name="time1" id="time1" value$="{{initialtime}}">
-    <input type="text" name="time2" id="time2" value$="{{finaltime}}">
+    <input type="text" name="time1" id="time1">
+    <input type="text" name="time2" id="time2">
     <button onclick="setTime();"></button>
     <div id="content">
     </div>
@@ -33,7 +33,36 @@
 
               //Create the Axis
               //Create an SVG group Element for the Axis elements and call the xAxis function
-              var jsonCircles = {{data}};
+              var jsonCircles = [
+                { "sec": 0, "sentiment": 0},
+                { "sec": 1, "sentiment": 1},
+                { "sec": 2, "sentiment": -1},
+                { "sec": 3, "sentiment": -1},
+                { "sec": 4, "sentiment": 1},  
+                { "sec": 5, "sentiment": 1},
+                { "sec": 6, "sentiment": -1},
+                { "sec": 7, "sentiment": 1},
+                { "sec": 8, "sentiment": 1}, 
+                { "sec": 9, "sentiment": -1},
+                { "sec": 10, "sentiment": 1},
+                { "sec": 11, "sentiment": 1},
+                { "sec": 12, "sentiment": -1},
+                { "sec": 13, "sentiment": -1},
+                { "sec": 14, "sentiment": 1},  
+                { "sec": 15, "sentiment": 1},
+                { "sec": 16, "sentiment": -1},
+                { "sec": 17, "sentiment": 1},
+                { "sec": 18, "sentiment": 1},
+                { "sec": 19, "sentiment": -1},
+                { "sec": 20, "sentiment": 1},  
+                { "sec": 21, "sentiment": 1},
+                { "sec": 22, "sentiment": -1},
+                { "sec": 23, "sentiment": -1},
+                { "sec": 24, "sentiment": 1},  
+                { "sec": 25, "sentiment": 1},
+                { "sec": 26, "sentiment": -1},
+                { "sec": 27, "sentiment": 1},
+                { "sec": 28, "sentiment": 1}];
 
 
               var circles = svgContainer.selectAll("#content")
@@ -42,8 +71,7 @@
                                         .append("circle");  
               var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
               var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
-
-              function setTime(){
+                    function setTime(){
               var t1 = document.getElementById("time1");
               var t2 = document.getElementById("time2");
               n = t2.value - t1.value;
@@ -80,27 +108,90 @@
         Polymer({
             is: 'sentiment-displayer',
             properties: {
-              finaltime: {
-                type: String,
-                value: ''
-  
+              total: {
+                type: Number,
+                value: 0
               },
-              initialtime: {
+              stylebg: {
                 type: String,
-                value: ''
-                  
+                value: 'bg-yellow'
               },
               data: {
                 type: Object,
-                value: '{}'
-                              
+                observer: '_dataChanged'              
+              },
+              title: {
+                type: String,
+                value: 'Elements selected'
+              },
+              subtitle: {
+                type: String,
+                value: 'Total elements'
+              },
+              icon: {
+                type: String,
+                value: 'delete'
+              },
+              number: {
+                type: Number,
+                value: 0
+              },
+              object: {
+                type: String
+              },
+              aggkey: {
+                type: String,
+                value: 'category'
+              },
+              filters: {
+                type: Array,
+                notify: true,
+                value: function() { return []; }
+              }
+            },
+
+            kFormatter: function(num){
+              return num > 999 ? (num/1000).toFixed(1) + 'k' : num
+            },
+
+            _dataChanged: function() {
+              console.log("data has changed")
+              if(this.data == undefined || this.data.hits == undefined){
+                console.log("No data");
+                return;
+              }
+              numberMax = this.data.hits.total;
+              var idNum = this.$.number;
+              var idBar = this.$.barprogress;
+              var object = this.object;
+              if (object != undefined){
+                var hits = this.data.aggregations[this.aggkey].buckets;
+                var selected = 0;
+                hits.forEach(function(entry) {
+                  if(entry.key == object){
+                    //console.log("el object es: "+object+" el entry.key es: "+entry.key)
+                    selected = entry.doc_count;
+                  }
+                });
+                console.log(selected);
+                idNum.innerHTML = this.kFormatter(selected);
+                progress = 100*selected/numberMax;
+                idBar.style.width = progress+"%";
+                this.total = this.kFormatter(numberMax);
+              }
+              else{
+                //console.log(this.data.hits)
+                var num = this.data.hits.total > 999 ? (this.data.hits.total/1000).toFixed(1) + 'k' : this.data.hits.total;
+                idNum.innerHTML = num;
+    this.total = num;
+                idBar.style.width = "100%";
               }
             },
             ready: function(){
               
               
 
-            	       
+                     
 
             }
 
