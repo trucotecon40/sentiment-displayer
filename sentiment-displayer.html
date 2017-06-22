@@ -9,8 +9,8 @@
   <script src="bower_components/d3/d3.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>  
   <template>
-    <input type="text" name="time1" id="time1" value="">
-    <input type="text" name="time2" id="time2" value="">
+    <input type="text" name="time1" id="time1" value$="{{initialtime}}">
+    <input type="text" name="time2" id="time2" value$="{{finaltime}}">
     <button onclick="setTime();"></button>
     <div id="content">
     </div>
@@ -33,36 +33,7 @@
 
               //Create the Axis
               //Create an SVG group Element for the Axis elements and call the xAxis function
-              var jsonCircles = [
-                { "sec": 0, "sentiment": 0},
-                { "sec": 1, "sentiment": 1},
-                { "sec": 2, "sentiment": -1},
-                { "sec": 3, "sentiment": -1},
-                { "sec": 4, "sentiment": 1},  
-                { "sec": 5, "sentiment": 1},
-                { "sec": 6, "sentiment": -1},
-                { "sec": 7, "sentiment": 1},
-                { "sec": 8, "sentiment": 1}, 
-                { "sec": 9, "sentiment": -1},
-                { "sec": 10, "sentiment": 1},
-                { "sec": 11, "sentiment": 1},
-                { "sec": 12, "sentiment": -1},
-                { "sec": 13, "sentiment": -1},
-                { "sec": 14, "sentiment": 1},  
-                { "sec": 15, "sentiment": 1},
-                { "sec": 16, "sentiment": -1},
-                { "sec": 17, "sentiment": 1},
-                { "sec": 18, "sentiment": 1},
-                { "sec": 19, "sentiment": -1},
-                { "sec": 20, "sentiment": 1},  
-                { "sec": 21, "sentiment": 1},
-                { "sec": 22, "sentiment": -1},
-                { "sec": 23, "sentiment": -1},
-                { "sec": 24, "sentiment": 1},  
-                { "sec": 25, "sentiment": 1},
-                { "sec": 26, "sentiment": -1},
-                { "sec": 27, "sentiment": 1},
-                { "sec": 28, "sentiment": 1}];
+              var jsonCircles = {{data}};
 
 
               var circles = svgContainer.selectAll("#content")
@@ -111,27 +82,19 @@
             properties: {
               finaltime: {
                 type: String,
-                value: '',
-                observer: '_dataChanged'  
+                value: ''
+  
               },
               initialtime: {
                 type: String,
-                value: '',
-                observer: '_dataChanged'  
+                value: ''
+                  
               },
               data: {
                 type: Object,
-                observer: '_dataChanged'              
+                value: '{}'
+                              
               }
-            },
-            _dataChanged: function() {
-              console.log("data has changed")
-              if(this.data == undefined){
-                console.log("No data");
-                return;
-              }
-              this.setTime();
-
             },
             ready: function(){
               
