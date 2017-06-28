@@ -33,8 +33,16 @@
 
               //Create the Axis
               //Create an SVG group Element for the Axis elements and call the xAxis function
+              var loaded = 0;
+              var jsonCirclesa = [];
               function setTime(){
-                document.getElementById('sentiment-displayer1').paint();
+
+              if (loaded==0){
+                var unsorted = document.getElementById('sentiment-displayer1').getData();
+                jsonCirclesa = unsorted.sort(function(a, b) {return a._source.sec - b._source.sec});
+              }
+                document.getElementById('sentiment-displayer1').paint(jsonCirclesa, loaded);
+                loaded = 1;
               }
     </script>
   </template>
@@ -72,11 +80,12 @@
             getData: function() {
               return this.data;
             },
-            paint: function(){
+            paint: function(jsonCirclesa, loaded){
               
-              var jsonCircles = document.getElementById('sentiment-displayer1').getData();
-
-
+              if(loaded==1){
+                d3.select("svg").selectAll("circle").remove();
+              }
+              var jsonCircles = jsonCirclesa;
               var circles = svgContainer.selectAll("#content")
                                         .data(jsonCircles)
                                         .enter()
@@ -89,18 +98,18 @@
               n = t2.value - t1.value;
                 axisScale = d3.scale.linear().domain([t1.value, t2.value]).range([0, w]);
                       xAxis = d3.svg.axis().scale(axisScale);
-                      d3.select("svg").select("g").remove();
+                      d3.select("svg").selectAll("g").remove();
                       
-                      d3.select("svg").select("g").remove();
                       d3.select("path").remove();
                       axisGroup = svgContainer.append("g").attr("transform", "translate( 50 ," + hmed + ")").call(xAxis);
+
                       circleAttributes = circles
-                                       .attr("cx", function (d) { return d.sec*w/n +50 - t1.value*w/n; })
-                                       .attr("cy", function (d) { return -d.sentiment * hmed*0.5+ hmed; })
+                                       .attr("cx", function (d) { console.log(d); return d._source.sec*w/n +50 - t1.value*w/n; })
+                                       .attr("cy", function (d) { return -d._source.polarity * hmed*0.5+ hmed; })
                                        .attr("r", function (d) { return 5; }); 
                         lineFunction = d3.svg.line()
-                                          .x(function(d) { return d.sec*w/n +50 - t1.value*w/n; })
-                                          .y(function(d) { return -d.sentiment * hmed*0.5+ hmed; })
+                                          .x(function(d) { return d._source.sec*w/n +50 - t1.value*w/n; })
+                                          .y(function(d) { return -d._source.polarity * hmed*0.5+ hmed; })
                                           .interpolate("linear");               
                         lineGraph = svgContainer.append("path")
                                             .attr("d", lineFunction(jsonCircles))
@@ -111,7 +120,7 @@
                         
                     
 
-            	       
+                     
 
             }
 
