@@ -39,7 +39,8 @@
 
               if (loaded==0){
                 var unsorted = document.getElementById('sentiment-displayer1').getData();
-                jsonCirclesa = unsorted.sort(function(a, b) {return a._source.sec - b._source.sec});
+                console.log(unsorted);
+                jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
               }
                 document.getElementById('sentiment-displayer1').paint(jsonCirclesa, loaded);
                 loaded = 1;
@@ -104,12 +105,12 @@
                       axisGroup = svgContainer.append("g").attr("transform", "translate( 50 ," + hmed + ")").call(xAxis);
 
                       circleAttributes = circles
-                                       .attr("cx", function (d) { console.log(d); return d._source.sec*w/n +50 - t1.value*w/n; })
-                                       .attr("cy", function (d) { return -d._source.polarity * hmed*0.5+ hmed; })
+                                       .attr("cx", function (d) { console.log(d); return d.start*w/n +50 - t1.value*w/n; })
+                                       .attr("cy", function (d) { return -d.polarity * hmed*0.5+ hmed; })
                                        .attr("r", function (d) { return 5; }); 
                         lineFunction = d3.svg.line()
-                                          .x(function(d) { return d._source.sec*w/n +50 - t1.value*w/n; })
-                                          .y(function(d) { return -d._source.polarity * hmed*0.5+ hmed; })
+                                          .x(function(d) { return d.start*w/n +50 - t1.value*w/n; })
+                                          .y(function(d) { return -d.polarity * hmed*0.5+ hmed; })
                                           .interpolate("linear");               
                         lineGraph = svgContainer.append("path")
                                             .attr("d", lineFunction(jsonCircles))
