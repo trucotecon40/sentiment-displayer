@@ -11,9 +11,10 @@
   <template>
     <input type="text" name="time1" id="time1" value$="{{initialtime}}">
     <input type="text" name="time2" id="time2" value$="{{finaltime}}">
-    <button onclick="setTime();"></button>
+    <button onclick="setTime();" style="font-size: 1em">Show</button>
     <div id="content">
     </div>
+    <input type="text" id="caption_container" disabled="true" style="display: none; margin-left: 25vw; width: 45vw; text-align: center; font-weight: bold;"></input>
     <script>
                   var w = window.innerWidth/2;//this.$(content).width();
 
@@ -35,6 +36,19 @@
               //Create an SVG group Element for the Axis elements and call the xAxis function
               var loaded = 0;
               var jsonCirclesa = [];
+              function choose_caption(time, caption){
+              	console.log("tiempo: " + time);
+              	console.log("caption: " + caption )
+              document.getElementById('caption_container').style.display="";
+              document.getElementById('caption_container').value=caption;
+
+              }
+              function goBig(id){
+              	document.getElementById(id).setAttribute("r", "9");
+              }
+              function goSmall(id){
+              	document.getElementById(id).setAttribute("r", "5");
+              }
               function setTime(){
 
               if (loaded==0){
@@ -107,7 +121,11 @@
                       circleAttributes = circles
                                        .attr("cx", function (d) { console.log(d); return d.start*w/n +50 - t1.value*w/n; })
                                        .attr("cy", function (d) { return -d.polarity * hmed*0.5+ hmed; })
-                                       .attr("r", function (d) { return 5; }); 
+                                       .attr("r", function (d) { return 5; })
+                                       .attr("onclick", function (d) { var c = new String(d.caption.replace("'","\\'"));return "choose_caption("+d.start+",'"+c+"');"})
+                                       .attr("id",function (d) { return d.id})
+                                       .attr("onmouseover",function (d) { return "goBig("+d.id+");"; })
+                                       .attr("onmouseout",function (d) { return "goSmall("+d.id+");"; }); 
                         lineFunction = d3.svg.line()
                                           .x(function(d) { return d.start*w/n +50 - t1.value*w/n; })
                                           .y(function(d) { return -d.polarity * hmed*0.5+ hmed; })
