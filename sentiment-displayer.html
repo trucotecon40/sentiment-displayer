@@ -5,25 +5,35 @@
 <link rel="import" href="../iron-icons/social-icons.html">
 <link rel="import" href="../jquery/social-icons.html">
 <dom-module id="sentiment-displayer">
+
   <link rel="import" type="css" href="sentiment.css">
   <script src="bower_components/d3/d3.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>  
   <template>
-    <input type="text" name="time1" id="time1" value$="{{initialtime}}">
-    <input type="text" name="time2" id="time2" value$="{{finaltime}}">
+    <div class="widget-wrapper">
+    <div class="top-widget">
+      Sentiment displayer
+    </div>
+    <div style="text-align: center;">Zoom:
+    <input type="text" name="time1" id="time1" placeholder=" Initial time">
+    <input type="text" name="time2" id="time2" placeholder=" Final time">
     <button onclick="setTime();" style="font-size: 1em">Show</button>
+    </div> 
     <div id="content">
     </div>
-    <input type="text" id="caption_container" disabled="true" style="display: none; margin-left: 25vw; width: 45vw; text-align: center; font-weight: bold;"></input>
+    <div style="text-align: center;">
+    <input type="text" id="caption_container" disabled="true" style="display: none;  width: 45vw; text-align: center; font-weight: bold;"></input>
+    </div>
+    </div>
     <script>
                   var w = window.innerWidth/2;//this.$(content).width();
 
               var h = window.innerHeight/2; //this.$(content).height();
-              var waum = w + 10//this.$(content).width();
+              var waum = w + 12//this.$(content).width();
 
               var haum = h + 10 //this.$(content).height();
               var svgContainer = d3.select("#content").append("svg")
-                                                   .attr("width", waum + 50)
+                                                   .attr("width", waum + 90)
                                                    .attr("height", haum);
               
               console.log(w + " " + h);
@@ -44,21 +54,47 @@
 
               }
               function goBig(id){
-              	document.getElementById(id).setAttribute("r", "9");
+                document.getElementById(id).setAttribute("style", "fill: #3dc1f0");
+              	document.getElementById(id).setAttribute("r", "5");
               }
               function goSmall(id){
+                document.getElementById(id).setAttribute("style", "fill: white");
               	document.getElementById(id).setAttribute("r", "5");
               }
               function setTime(){
-
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
+                console.log(loaded);
               if (loaded==0){
                 var unsorted = document.getElementById('sentiment-displayer1').getData();
                 console.log(unsorted);
                 jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
               }
-                document.getElementById('sentiment-displayer1').paint(jsonCirclesa, loaded);
+              var jsonCirclesb = jsonCirclesa;
+              console.log(jsonCirclesa);
+                document.getElementById('sentiment-displayer1').paint(jsonCirclesb, loaded);
+                console.log(jsonCirclesa);
                 loaded = 1;
+                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+                var lines = document.getElementsByTagName('line');
+                for (var i in lines){
+                  lines[i].setAttribute('class', 'sentiment-displayer');
+                }
+                
+              
               }
+              document.getElementById('sentiment-displayer1').initial_load();
+              
+                     
+                 
     </script>
   </template>
 
@@ -95,48 +131,106 @@
             getData: function() {
               return this.data;
             },
+            initial_load: function(){
+              var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
+              var ticks = [0,1/4,2/4,3/4,1];
+              var tickLabels = ['','Negative','Neutral','Positive']
+              var yAxis = d3.svg.axis().scale(y0).tickValues(ticks).tickFormat(function(d,i){ return tickLabels[i] }).innerTickSize(-w).outerTickSize(0).tickPadding(10).orient("left");
+              axisScale = d3.scale.linear().domain([0, 1]).range([0, w]);
+                      xAxis = d3.svg.axis().scale(axisScale);
+              axisGroup = svgContainer.append("g").attr("transform", "translate( 70 ," + hmed*1.7 + ")").attr("class", "axis.sentiment-displayer").attr("id", "sentiment-displayer").call(xAxis);   
+              axisGroup = svgContainer.append("g").attr("transform", "translate( 70,"+ ((hmed*1.75)-12) + ")").call(yAxis);     
+                var loaded = 1;
+                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+                var lines = document.getElementsByTagName('line');
+                for (var i in lines){
+                  lines[i].setAttribute('class', 'sentiment-displayer');
+                }
+            },
             paint: function(jsonCirclesa, loaded){
               
               if(loaded==1){
                 d3.select("svg").selectAll("circle").remove();
               }
-              var jsonCircles = jsonCirclesa;
+              var original = jsonCirclesa.slice();
+              var last_time = jsonCirclesa[jsonCirclesa.length-1].start;
+              
+              var last_id = jsonCirclesa[jsonCirclesa.length-1].id;
+              var t1 = document.getElementById("time1");
+              var t2 = document.getElementById("time2");
+              if(loaded==0){
+
+              }
+              var jsonCircles = jsonCirclesa.slice();
+              var loop_index = 0;
+                console.log("1: " +jsonCircles[loop_index].start);
+                
+                while ((jsonCircles[loop_index].start < t1.value)&&(jsonCircles[loop_index].start != 0)){
+                  console.log("2: " +jsonCircles[loop_index].start);
+                  jsonCircles.splice(loop_index, 1);
+                  console.log("3: " +jsonCircles[loop_index].start);
+                }
+                while ((jsonCircles[jsonCircles.length-1].start > t2.value)){
+                  console.log("2: " +jsonCircles[loop_index].start);
+                  jsonCircles.splice(jsonCircles.length-1, 1);
+                }                
+                var first_time = jsonCirclesa[0].start;
+                jsonCircles.unshift({start: (t1.value), end: 0, caption: "#Section starts#", id: -1, _id: -1, polarity: 0});
+                jsonCircles.push({start: (t2.value), end: 0, caption: "#Section ends#", id: (last_id + 1), _id: (last_id + 1), polarity: 0});
+                console.log("4: " +jsonCircles[loop_index].start);
+
+              
+              
+              console.log(jsonCircles);
+
               var circles = svgContainer.selectAll("#content")
                                         .data(jsonCircles)
                                         .enter()
                                         .append("circle");  
-              var y0 = d3.scale.linear().domain([-1,1]).range([0, -hred]);
-              var yAxis = d3.svg.axis().scale(y0).orient("left").ticks(5);
+              var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
+              var ticks = [0,1/4,2/4,3/4,1];
+              var tickLabels = ['','Negative','Neutral','Positive']
+              var yAxis = d3.svg.axis().scale(y0).tickValues(ticks).tickFormat(function(d,i){ return tickLabels[i] }).innerTickSize(-w).outerTickSize(0).tickPadding(10).orient("left");
               
-              var t1 = document.getElementById("time1");
-              var t2 = document.getElementById("time2");
+
               n = t2.value - t1.value;
                 axisScale = d3.scale.linear().domain([t1.value, t2.value]).range([0, w]);
                       xAxis = d3.svg.axis().scale(axisScale);
                       d3.select("svg").selectAll("g").remove();
                       
                       d3.select("path").remove();
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50 ," + hmed + ")").call(xAxis);
+                      d3.select("path").remove();
 
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 70 ," + hmed*1.7 + ")").attr("class", "axis.sentiment-displayer").attr("id", "sentiment-displayer").call(xAxis);
+                      
                       circleAttributes = circles
-                                       .attr("cx", function (d) { console.log(d); return d.start*w/n +50 - t1.value*w/n; })
-                                       .attr("cy", function (d) { return -d.polarity * hmed*0.5+ hmed; })
+                                       .attr("cx", function (d) {  return d.start*w/n +70 - t1.value*w/n; })
+                                       .attr("cy", function (d) { return ((-d.polarity*0.75) * hmed*0.5+ hmed) -9; })
                                        .attr("r", function (d) { return 5; })
                                        .attr("onclick", function (d) { var c = new String(d.caption.replace("'","\\'"));return "choose_caption("+d.start+",'"+c+"');"})
                                        .attr("id",function (d) { return d.id})
                                        .attr("onmouseover",function (d) { return "goBig("+d.id+");"; })
-                                       .attr("onmouseout",function (d) { return "goSmall("+d.id+");"; }); 
+                                       .attr("onmouseout",function (d) { return "goSmall("+d.id+");"; })
+                                       .attr("style", "fill: white"); 
                         lineFunction = d3.svg.line()
-                                          .x(function(d) { return d.start*w/n +50 - t1.value*w/n; })
-                                          .y(function(d) { return -d.polarity * hmed*0.5+ hmed; })
+                                          .x(function(d) { return d.start*w/n +70 - t1.value*w/n; })
+                                          .y(function(d) { return ((-d.polarity*0.73) * hmed*0.5+ hmed) -9; })
                                           .interpolate("linear");               
                         lineGraph = svgContainer.append("path")
                                             .attr("d", lineFunction(jsonCircles))
-                                            .attr("stroke", "blue")
+                                            .attr("stroke", "#00c0ef")
                                             .attr("stroke-width", 2)
+                                            .attr("fill-opacity", 1)
                                             .attr("fill", "none");
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 50,"+ h + ")").call(yAxis);
-                        
+                        lineGraph = svgContainer.append("path")
+                                            .attr("d", lineFunction(jsonCircles))
+                                            .attr("stroke", "none")
+                                            .attr("stroke-width", 0)
+                                            .attr("fill-opacity", 0.3)
+                                            .attr("fill", "#00c0ef");
+                      axisGroup = svgContainer.append("g").attr("transform", "translate( 70,"+ ((hmed*1.75)-12) + ")").call(yAxis);
+            jsonCirclesa = original; 
                     
 
                      
