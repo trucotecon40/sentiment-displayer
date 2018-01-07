@@ -26,9 +26,9 @@
     </div>
     </div>
     <script>
-                  var w = window.innerWidth/2;//this.$(content).width();
+              var w = $("#content").parent().width()/1.25;//this.$(content).width();
 
-              var h = window.innerHeight/2; //this.$(content).height();
+              var h = $("#content").parent().height()*3; //this.$(content).height();
               var waum = w + 12//this.$(content).width();
 
               var haum = h + 10 //this.$(content).height();
@@ -36,7 +36,7 @@
                                                    .attr("width", waum + 90)
                                                    .attr("height", haum);
               
-              console.log(w + " " + h);
+              
               var hred= h -10;
               var hmed= h/2;
               //Create the Scale we will use for the Axis
@@ -47,8 +47,7 @@
               var loaded = 0;
               var jsonCirclesa = [];
               function choose_caption(time, caption){
-              	console.log("tiempo: " + time);
-              	console.log("caption: " + caption )
+
               document.getElementById('caption_container').style.display="";
               document.getElementById('caption_container').value=caption;
 
@@ -62,25 +61,16 @@
               	document.getElementById(id).setAttribute("r", "5");
               }
               function setTime(){
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
-                console.log(loaded);
+
               if (loaded==0){
                 var unsorted = document.getElementById('sentiment-displayer1').getData();
-                console.log(unsorted);
+                
                 jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
               }
               var jsonCirclesb = jsonCirclesa;
-              console.log(jsonCirclesa);
+              
                 document.getElementById('sentiment-displayer1').paint(jsonCirclesb, loaded);
-                console.log(jsonCirclesa);
+                
                 loaded = 1;
                 document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
                 document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
@@ -105,9 +95,9 @@
         Polymer({
             is: 'sentiment-displayer',
             properties: {
-              finaltime: {
+              playing: {
                 type: String,
-                value: ''
+                observer: 'playingSwitch'              
               },
               initialtime: {
                 type: String,
@@ -117,6 +107,14 @@
               data: {
                 type: Object,
                 value: ''              
+              },
+              secs: {
+                type: Number,
+                value: '1'              
+              },
+              interval: {
+                type: String,
+                value: ''              
               }
             },
             _dataChanged: function() {
@@ -125,8 +123,11 @@
                 console.log("No data");
                 return;
               }
-              setTime();
+              console.log(this.playing);
 
+            },
+            getPlaying: function() {
+              return this.playing;
             },
             getData: function() {
               return this.data;
@@ -148,41 +149,88 @@
                   lines[i].setAttribute('class', 'sentiment-displayer');
                 }
             },
-            paint: function(jsonCirclesa, loaded){
+            clockDrawer: function(selector){
+              unsorted = selector.data;
+                
+                jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
+              var secs = selector.secs;
+              console.log(secs);
+
+                var jsonCirclesb = [];
+                
+                  
+                  jsonCirclesb = jsonCirclesa;
+                
+                console.log("TEEEEEEEEEEEEEST" + secs);
+                selector.paint(jsonCirclesb, loaded, secs);
+                
+                loaded = 1;
+                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+                var lines = document.getElementsByTagName('line');
+                for (var i in lines){
+                  console.log(lines[i]);
+                  if(i=="length"){
+                      break;
+                  }else{
+                  lines[i].setAttribute('class', 'sentiment-displayer');
+                }
+                }
+                selector.secs++;
               
+            },
+            playingSwitch: function(){
+
+              if(this.playing=="true"){
+                this.interval = window.setInterval(this.clockDrawer, 1000, this);
+              }else{
+                clearInterval(this.interval);
+                this.interval = '';
+              }
+            },
+            paint: function(jsonCirclesa, loaded, secs = 0){
+              console.log(this.playing);
               if(loaded==1){
                 d3.select("svg").selectAll("circle").remove();
               }
               var original = jsonCirclesa.slice();
+              console.log(jsonCirclesa[jsonCirclesa.length-1]);
+              console.log(jsonCirclesa[0]);
               var last_time = jsonCirclesa[jsonCirclesa.length-1].start;
               
               var last_id = jsonCirclesa[jsonCirclesa.length-1].id;
+              if(this.playing=="true"){
+              document.getElementById("time1").value = 0;
+              document.getElementById("time2").value = secs;
+              } else{
+
+              }
               var t1 = document.getElementById("time1");
-              var t2 = document.getElementById("time2");
+              var t2 = document.getElementById("time2");              
               if(loaded==0){
 
               }
               var jsonCircles = jsonCirclesa.slice();
               var loop_index = 0;
-                console.log("1: " +jsonCircles[loop_index].start);
+                
                 
                 while ((jsonCircles[loop_index].start < t1.value)&&(jsonCircles[loop_index].start != 0)){
-                  console.log("2: " +jsonCircles[loop_index].start);
+                  
                   jsonCircles.splice(loop_index, 1);
-                  console.log("3: " +jsonCircles[loop_index].start);
+                  
                 }
                 while ((jsonCircles[jsonCircles.length-1].start > t2.value)){
-                  console.log("2: " +jsonCircles[loop_index].start);
+                  
                   jsonCircles.splice(jsonCircles.length-1, 1);
                 }                
                 var first_time = jsonCirclesa[0].start;
                 jsonCircles.unshift({start: (t1.value), end: 0, caption: "#Section starts#", id: -1, _id: -1, polarity: 0});
                 jsonCircles.push({start: (t2.value), end: 0, caption: "#Section ends#", id: (last_id + 1), _id: (last_id + 1), polarity: 0});
-                console.log("4: " +jsonCircles[loop_index].start);
-
+                
+                console.log(jsonCircles);
               
               
-              console.log(jsonCircles);
+              
 
               var circles = svgContainer.selectAll("#content")
                                         .data(jsonCircles)
