@@ -47,9 +47,9 @@
               var loaded = 0;
               var jsonCirclesa = [];
               function choose_caption(time, caption){
-
-              document.getElementById('caption_container').style.display="";
-              document.getElementById('caption_container').value=caption;
+              document.getElementById('sentiment-displayer1').changeTime(time);
+              //document.getElementById('caption_container').style.display="";
+              //document.getElementById('caption_container').value=caption;
 
               }
               function goBig(id){
@@ -101,6 +101,7 @@
               },
               initialtime: {
                 type: String,
+                notify: true,
                 value: ''
                   
               },
@@ -131,6 +132,10 @@
             },
             getData: function() {
               return this.data;
+            },
+            changeTime: function(time) {
+              this.initialtime = parseInt(time);
+              this.secs = parseInt(time);
             },
             initial_load: function(){
               var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
