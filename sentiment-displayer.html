@@ -102,16 +102,18 @@
               initialtime: {
                 type: String,
                 notify: true,
-                value: ''
-                  
+                value: '',
+                observer: '_dataChanged'
               },
               data: {
                 type: Object,
                 value: ''              
               },
               secs: {
-                type: Number,
-                value: '1'              
+                type: String,
+                value: '{{secs}}',
+                notify: true,
+                observer: '_dataChanged'              
               },
               interval: {
                 type: String,
@@ -124,7 +126,8 @@
                 console.log("No data");
                 return;
               }
-              console.log(this.playing);
+              
+              console.log(this.secs);
 
             },
             getPlaying: function() {
@@ -134,8 +137,9 @@
               return this.data;
             },
             changeTime: function(time) {
-              this.initialtime = parseInt(time);
-              this.secs = parseInt(time);
+              this.initialtime = time;
+              this.clockDrawer(this, String(time));
+              
             },
             initial_load: function(){
               var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
@@ -154,19 +158,21 @@
                   lines[i].setAttribute('class', 'sentiment-displayer');
                 }
             },
-            clockDrawer: function(selector){
+            clockDrawer: function(selector, changed){
               unsorted = selector.data;
-                
-                jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
-              var secs = selector.secs;
-              console.log(secs);
+              jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
+              if(changed==''){
+              var secs = parseInt(selector.secs);
+              } else{
+                var secs = changed;
+              }
+              console.log(selector.secs);
 
                 var jsonCirclesb = [];
                 
                   
                   jsonCirclesb = jsonCirclesa;
                 
-                console.log("TEEEEEEEEEEEEEST" + secs);
                 selector.paint(jsonCirclesb, loaded, secs);
                 
                 loaded = 1;
@@ -181,20 +187,28 @@
                   lines[i].setAttribute('class', 'sentiment-displayer');
                 }
                 }
-                selector.secs++;
+                
               
             },
             playingSwitch: function(){
 
               if(this.playing=="true"){
-                this.interval = window.setInterval(this.clockDrawer, 1000, this);
+                this.interval = window.setInterval(this.clockDrawer, 250, this, '');
               }else{
                 clearInterval(this.interval);
                 this.interval = '';
               }
             },
             paint: function(jsonCirclesa, loaded, secs = 0){
-              console.log(this.playing);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
+              console.log(secs);
               if(loaded==1){
                 d3.select("svg").selectAll("circle").remove();
               }
@@ -205,10 +219,10 @@
               
               var last_id = jsonCirclesa[jsonCirclesa.length-1].id;
               if(this.playing=="true"){
-              document.getElementById("time1").value = 0;
-              document.getElementById("time2").value = secs;
+                document.getElementById("time1").value = 0;
+                document.getElementById("time2").value = secs;
               } else{
-
+                document.getElementById("time2").value = secs;
               }
               var t1 = document.getElementById("time1");
               var t2 = document.getElementById("time2");              
