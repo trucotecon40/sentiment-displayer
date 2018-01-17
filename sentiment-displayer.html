@@ -11,19 +11,19 @@
   <script src="bower_components/jquery/dist/jquery.min.js"></script>  
   <template>
     <div class="widget-wrapper">
-    <div class="top-widget">
-      Sentiment displayer
-    </div>
-    <div style="text-align: center;">Zoom:
-    <input type="text" name="time1" id="time1" placeholder=" Initial time">
-    <input type="text" name="time2" id="time2" placeholder=" Final time">
-    <button onclick="setTime();" style="font-size: 1em">Show</button>
-    </div> 
-    <div id="content">
-    </div>
-    <div style="text-align: center;">
-    <input type="text" id="caption_container" disabled="true" style="display: none;  width: 45vw; text-align: center; font-weight: bold;"></input>
-    </div>
+      <div class="top-widget">
+        Sentiment displayer
+      </div>
+      <div style="text-align: center;">Zoom:
+        <input type="text" name="time1" id="time1" placeholder=" Initial time">
+        <input type="text" name="time2" id="time2" placeholder=" Final time">
+        <button onclick="setTime();" style="font-size: 1em">Show</button>
+      </div> 
+      <div id="content">
+      </div>
+      <div style="text-align: center;">
+        <input type="text" id="caption_container" disabled="true" style="display: none;  width: 45vw; text-align: center; font-weight: bold;"></input>
+      </div>
     </div>
     <script>
               var w = $("#content").parent().width()/1.25;//this.$(content).width();
@@ -33,8 +33,8 @@
 
               var haum = h + 10 //this.$(content).height();
               var svgContainer = d3.select("#content").append("svg")
-                                                   .attr("width", waum + 90)
-                                                   .attr("height", haum);
+              .attr("width", waum + 90)
+              .attr("height", haum);
               
               
               var hred= h -10;
@@ -47,264 +47,260 @@
               var loaded = 0;
               var jsonCirclesa = [];
               function choose_caption(time, caption){
-              document.getElementById('sentiment-displayer1').changeTime(time);
+                document.getElementById('{{id}}').changeTime(time);
               //document.getElementById('caption_container').style.display="";
               //document.getElementById('caption_container').value=caption;
 
-              }
-              function goBig(id){
-                document.getElementById(id).setAttribute("style", "fill: #3dc1f0");
-              	document.getElementById(id).setAttribute("r", "5");
-              }
-              function goSmall(id){
-                document.getElementById(id).setAttribute("style", "fill: white");
-              	document.getElementById(id).setAttribute("r", "5");
-              }
-              function setTime(){
+            }
+            function goBig(id){
+              document.getElementById(id).setAttribute("style", "fill: #3dc1f0");
+              document.getElementById(id).setAttribute("r", "5");
+            }
+            function goSmall(id){
+              document.getElementById(id).setAttribute("style", "fill: white");
+              document.getElementById(id).setAttribute("r", "5");
+            }
+            function setTime(){
 
               if (loaded==0){
-                var unsorted = document.getElementById('sentiment-displayer1').getData();
+                var unsorted = document.getElementById('{{id}}').getData();
                 
                 jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
               }
               var jsonCirclesb = jsonCirclesa;
               
-                document.getElementById('sentiment-displayer1').paint(jsonCirclesb, loaded);
-                
-                loaded = 1;
-                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
-                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
-                var lines = document.getElementsByTagName('line');
-                for (var i in lines){
-                  lines[i].setAttribute('class', 'sentiment-displayer');
-                }
-                
+              document.getElementById('{{id}}').paint(jsonCirclesb, loaded);
               
-              }
-              document.getElementById('sentiment-displayer1').initial_load();
-              
-                     
-                 
-    </script>
-  </template>
-
-    <script>
-      //Create the SVG Viewport
-    
-      var numberMax = 0;
-        Polymer({
-            is: 'sentiment-displayer',
-            properties: {
-              playing: {
-                type: String,
-                observer: 'playingSwitch'              
-              },
-              initialtime: {
-                type: String,
-                notify: true,
-                value: '',
-                observer: '_dataChanged'
-              },
-              data: {
-                type: Object,
-                value: ''              
-              },
-              secs: {
-                type: String,
-                value: '{{secs}}',
-                notify: true,
-                observer: '_dataChanged'              
-              },
-              interval: {
-                type: String,
-                value: ''              
-              }
-            },
-            _dataChanged: function() {
-              console.log("data has changed")
-              if(this.data == undefined){
-                console.log("No data");
-                return;
+              loaded = 1;
+              document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+              document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+              var lines = document.getElementsByTagName('line');
+              for (var i in lines){
+                lines[i].setAttribute('class', 'sentiment-displayer');
               }
               
-              console.log(this.secs);
-
-            },
-            getPlaying: function() {
-              return this.playing;
-            },
-            getData: function() {
-              return this.data;
-            },
-            changeTime: function(time) {
-              this.initialtime = time;
-              this.clockDrawer(this, String(time));
               
-            },
-            initial_load: function(){
-              var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
-              var ticks = [0,1/4,2/4,3/4,1];
-              var tickLabels = ['','Negative','Neutral','Positive']
-              var yAxis = d3.svg.axis().scale(y0).tickValues(ticks).tickFormat(function(d,i){ return tickLabels[i] }).innerTickSize(-w).outerTickSize(0).tickPadding(10).orient("left");
-              axisScale = d3.scale.linear().domain([0, 1]).range([0, w]);
-                      xAxis = d3.svg.axis().scale(axisScale);
-              axisGroup = svgContainer.append("g").attr("transform", "translate( 70 ," + hmed*1.7 + ")").attr("class", "axis.sentiment-displayer").attr("id", "sentiment-displayer").call(xAxis);   
-              axisGroup = svgContainer.append("g").attr("transform", "translate( 70,"+ ((hmed*1.75)-12) + ")").call(yAxis);     
-                var loaded = 1;
-                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
-                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
-                var lines = document.getElementsByTagName('line');
-                for (var i in lines){
-                  lines[i].setAttribute('class', 'sentiment-displayer');
-                }
-            },
-            clockDrawer: function(selector, changed){
-              unsorted = selector.data;
-              jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
-              if(changed==''){
-              var secs = parseInt(selector.secs);
-              } else{
-                var secs = changed;
-              }
-              console.log(selector.secs);
-
-                var jsonCirclesb = [];
-                
-                  
-                  jsonCirclesb = jsonCirclesa;
-                
-                selector.paint(jsonCirclesb, loaded, secs);
-                
-                loaded = 1;
-                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
-                document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
-                var lines = document.getElementsByTagName('line');
-                for (var i in lines){
-                  console.log(lines[i]);
-                  if(i=="length"){
-                      break;
-                  }else{
-                  lines[i].setAttribute('class', 'sentiment-displayer');
-                }
-                }
-                
-              
-            },
-            playingSwitch: function(){
-
-              if(this.playing=="true"){
-                this.interval = window.setInterval(this.clockDrawer, 250, this, '');
-              }else{
-                clearInterval(this.interval);
-                this.interval = '';
-              }
-            },
-            paint: function(jsonCirclesa, loaded, secs = 0){
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              console.log(secs);
-              if(loaded==1){
-                d3.select("svg").selectAll("circle").remove();
-              }
-              var original = jsonCirclesa.slice();
-              console.log(jsonCirclesa[jsonCirclesa.length-1]);
-              console.log(jsonCirclesa[0]);
-              var last_time = jsonCirclesa[jsonCirclesa.length-1].start;
-              
-              var last_id = jsonCirclesa[jsonCirclesa.length-1].id;
-              if(this.playing=="true"){
-                document.getElementById("time1").value = 0;
-                document.getElementById("time2").value = secs;
-              } else{
-                document.getElementById("time2").value = secs;
-              }
-              var t1 = document.getElementById("time1");
-              var t2 = document.getElementById("time2");              
-              if(loaded==0){
-
-              }
-              var jsonCircles = jsonCirclesa.slice();
-              var loop_index = 0;
-                
-                
-                while ((jsonCircles[loop_index].start < t1.value)&&(jsonCircles[loop_index].start != 0)){
-                  
-                  jsonCircles.splice(loop_index, 1);
-                  
-                }
-                while ((jsonCircles[jsonCircles.length-1].start > t2.value)){
-                  
-                  jsonCircles.splice(jsonCircles.length-1, 1);
-                }                
-                var first_time = jsonCirclesa[0].start;
-                jsonCircles.unshift({start: (t1.value), end: 0, caption: "#Section starts#", id: -1, _id: -1, polarity: 0});
-                jsonCircles.push({start: (t2.value), end: 0, caption: "#Section ends#", id: (last_id + 1), _id: (last_id + 1), polarity: 0});
-                
-                console.log(jsonCircles);
-              
-              
-              
-
-              var circles = svgContainer.selectAll("#content")
-                                        .data(jsonCircles)
-                                        .enter()
-                                        .append("circle");  
-              var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
-              var ticks = [0,1/4,2/4,3/4,1];
-              var tickLabels = ['','Negative','Neutral','Positive']
-              var yAxis = d3.svg.axis().scale(y0).tickValues(ticks).tickFormat(function(d,i){ return tickLabels[i] }).innerTickSize(-w).outerTickSize(0).tickPadding(10).orient("left");
-              
-
-              n = t2.value - t1.value;
-                axisScale = d3.scale.linear().domain([t1.value, t2.value]).range([0, w]);
-                      xAxis = d3.svg.axis().scale(axisScale);
-                      d3.select("svg").selectAll("g").remove();
-                      
-                      d3.select("path").remove();
-                      d3.select("path").remove();
-
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 70 ," + hmed*1.7 + ")").attr("class", "axis.sentiment-displayer").attr("id", "sentiment-displayer").call(xAxis);
-                      
-                      circleAttributes = circles
-                                       .attr("cx", function (d) {  return d.start*w/n +70 - t1.value*w/n; })
-                                       .attr("cy", function (d) { return ((-d.polarity*0.75) * hmed*0.5+ hmed) -9; })
-                                       .attr("r", function (d) { return 5; })
-                                       .attr("onclick", function (d) { var c = new String(d.caption.replace("'","\\'"));return "choose_caption("+d.start+",'"+c+"');"})
-                                       .attr("id",function (d) { return d.id})
-                                       .attr("onmouseover",function (d) { return "goBig("+d.id+");"; })
-                                       .attr("onmouseout",function (d) { return "goSmall("+d.id+");"; })
-                                       .attr("style", "fill: white"); 
-                        lineFunction = d3.svg.line()
-                                          .x(function(d) { return d.start*w/n +70 - t1.value*w/n; })
-                                          .y(function(d) { return ((-d.polarity*0.73) * hmed*0.5+ hmed) -9; })
-                                          .interpolate("linear");               
-                        lineGraph = svgContainer.append("path")
-                                            .attr("d", lineFunction(jsonCircles))
-                                            .attr("stroke", "#00c0ef")
-                                            .attr("stroke-width", 2)
-                                            .attr("fill-opacity", 1)
-                                            .attr("fill", "none");
-                        lineGraph = svgContainer.append("path")
-                                            .attr("d", lineFunction(jsonCircles))
-                                            .attr("stroke", "none")
-                                            .attr("stroke-width", 0)
-                                            .attr("fill-opacity", 0.3)
-                                            .attr("fill", "#00c0ef");
-                      axisGroup = svgContainer.append("g").attr("transform", "translate( 70,"+ ((hmed*1.75)-12) + ")").call(yAxis);
-            jsonCirclesa = original; 
-                    
-
-                     
-
             }
+            document.getElementById('{{id}}').initial_load();
+            
+            
+            
+          </script>
+        </template>
 
-        });
+        <script>
+      //Create the SVG Viewport
+      
+      var numberMax = 0;
+      Polymer({
+        is: 'sentiment-displayer',
+        properties: {
+          playing: {
+            type: String,
+            observer: 'playingSwitch'              
+          },
+          initialtime: {
+            type: String,
+            notify: true,
+            value: '',
+            observer: '_dataChanged'
+          },
+          data: {
+            type: Object,
+            value: ''              
+          },
+          secs: {
+            type: String,
+            value: '{{secs}}',
+            notify: true,
+            observer: '_dataChanged'              
+          },
+          interval: {
+            type: String,
+            value: ''              
+          },
+          id: {
+            type: String,
+            value: "{{id}}", 
+          }
+        },
+        _dataChanged: function() {
+          
+          if(this.data == undefined){
+            
+            return;
+          }
+          
+          
+
+        },
+        getPlaying: function() {
+          return this.playing;
+        },
+        getData: function() {
+          return this.data;
+        },
+        changeTime: function(time) {
+          this.initialtime = time;
+          this.clockDrawer(this, String(time));
+          
+        },
+        initial_load: function(){
+          var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
+          var ticks = [0,1/4,2/4,3/4,1];
+          var tickLabels = ['','Negative','Neutral','Positive']
+          var yAxis = d3.svg.axis().scale(y0).tickValues(ticks).tickFormat(function(d,i){ return tickLabels[i] }).innerTickSize(-w).outerTickSize(0).tickPadding(10).orient("left");
+          axisScale = d3.scale.linear().domain([0, 1]).range([0, w]);
+          xAxis = d3.svg.axis().scale(axisScale);
+          axisGroup = svgContainer.append("g").attr("transform", "translate( 70 ," + hmed*1.7 + ")").attr("class", "axis.sentiment-displayer").attr("id", "sentiment-displayer").call(xAxis);   
+          axisGroup = svgContainer.append("g").attr("transform", "translate( 70,"+ ((hmed*1.75)-12) + ")").call(yAxis);     
+          var loaded = 1;
+          document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+          document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+          var lines = document.getElementsByTagName('line');
+          for (var i in lines){
+            lines[i].setAttribute('class', 'sentiment-displayer');
+          }
+        },
+        clockDrawer: function(selector, changed){
+          unsorted = selector.data;
+          jsonCirclesa = unsorted.sort(function(a, b) {return a.start - b.start});
+          if(changed==''){
+            var secs = parseInt(selector.secs);
+          } else{
+            var secs = changed;
+          }
+          
+
+          var jsonCirclesb = [];
+          
+          
+          jsonCirclesb = jsonCirclesa;
+          
+          selector.paint(jsonCirclesb, loaded, secs);
+          
+          loaded = 1;
+          document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+          document.getElementsByClassName('domain')[0].setAttribute('class', 'sentiment-displayer');
+          var lines = document.getElementsByTagName('line');
+          for (var i in lines){
+            
+            if(i=="length"){
+              break;
+            }else{
+              lines[i].setAttribute('class', 'sentiment-displayer');
+            }
+          }
+          
+          
+        },
+        playingSwitch: function(){
+
+          if(this.playing=="true"){
+            this.interval = window.setInterval(this.clockDrawer, 250, this, '');
+          }else{
+            clearInterval(this.interval);
+            this.interval = '';
+          }
+        },
+        paint: function(jsonCirclesa, loaded, secs = 0){
+
+          if(loaded==1){
+            d3.select("svg").selectAll("circle").remove();
+          }
+          var original = jsonCirclesa.slice();
+          var last_time = jsonCirclesa[jsonCirclesa.length-1].start;
+          
+          var last_id = jsonCirclesa[jsonCirclesa.length-1].id;
+          if(this.playing=="true"){
+            document.getElementById("time1").value = 0;
+            document.getElementById("time2").value = secs;
+          } else{
+            if(secs!=0){
+              document.getElementById("time2").value = secs;
+            }
+          }
+          var t1 = document.getElementById("time1");
+          var t2 = document.getElementById("time2");              
+          if(loaded==0){
+
+          }
+          var jsonCircles = jsonCirclesa.slice();
+          var loop_index = 0;
+          
+          
+          while ((jsonCircles[loop_index].start < t1.value)&&((jsonCircles[loop_index].end != 0))){
+            
+            jsonCircles.splice(loop_index, 1);
+            
+          }
+          while ((jsonCircles[jsonCircles.length-1].start > t2.value)){
+            
+            jsonCircles.splice(jsonCircles.length-1, 1);
+          }                
+          var first_time = jsonCirclesa[0].start;
+          jsonCircles.unshift({start: (t1.value), end: 0, caption: "#Section starts#", id: -1, _id: -1, polarity: 0});
+          jsonCircles.push({start: (t2.value), end: 0, caption: "#Section ends#", id: (last_id + 1), _id: (last_id + 1), polarity: 0});
+          
+          
+          
+          
+          
+
+          var circles = svgContainer.selectAll("#content")
+          .data(jsonCircles)
+          .enter()
+          .append("circle");  
+          var y0 = d3.scale.linear().domain([0,1]).range([0, -hred*0.75]);
+          var ticks = [0,1/4,2/4,3/4,1];
+          var tickLabels = ['','Negative','Neutral','Positive']
+          var yAxis = d3.svg.axis().scale(y0).tickValues(ticks).tickFormat(function(d,i){ return tickLabels[i] }).innerTickSize(-w).outerTickSize(0).tickPadding(10).orient("left");
+          
+
+          n = t2.value - t1.value;
+          axisScale = d3.scale.linear().domain([t1.value, t2.value]).range([0, w]);
+          xAxis = d3.svg.axis().scale(axisScale);
+          d3.select("svg").selectAll("g").remove();
+          
+          d3.select("path").remove();
+          d3.select("path").remove();
+
+          axisGroup = svgContainer.append("g").attr("transform", "translate( 70 ," + hmed*1.7 + ")").attr("class", "axis.sentiment-displayer").attr("id", "sentiment-displayer").call(xAxis);
+          
+          circleAttributes = circles
+          .attr("cx", function (d) {  return d.start*w/n +70 - t1.value*w/n; })
+          .attr("cy", function (d) { return ((-d.polarity*0.75) * hmed*0.5+ hmed) -9; })
+          .attr("r", function (d) { return 5; })
+          .attr("onclick", function (d) { var c = new String(d.caption.replace("'","\\'"));return "choose_caption("+d.start+",'"+c+"');"})
+          .attr("id",function (d) { return d.id})
+          .attr("onmouseover",function (d) { return "goBig("+d.id+");"; })
+          .attr("onmouseout",function (d) { return "goSmall("+d.id+");"; })
+          .attr("style", "fill: white"); 
+          lineFunction = d3.svg.line()
+          .x(function(d) { return d.start*w/n +70 - t1.value*w/n; })
+          .y(function(d) { return ((-d.polarity*0.73) * hmed*0.5+ hmed) -9; })
+          .interpolate("linear");               
+          lineGraph = svgContainer.append("path")
+          .attr("d", lineFunction(jsonCircles))
+          .attr("stroke", "#00c0ef")
+          .attr("stroke-width", 2)
+          .attr("fill-opacity", 1)
+          .attr("fill", "none");
+          lineGraph = svgContainer.append("path")
+          .attr("d", lineFunction(jsonCircles))
+          .attr("stroke", "none")
+          .attr("stroke-width", 0)
+          .attr("fill-opacity", 0.3)
+          .attr("fill", "#00c0ef");
+          axisGroup = svgContainer.append("g").attr("transform", "translate( 70,"+ ((hmed*1.75)-12) + ")").call(yAxis);
+          jsonCirclesa = original; 
+          
+
+          
+
+        }
+
+      });
     </script>
 
-</dom-module>
+  </dom-module>
